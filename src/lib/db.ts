@@ -1,4 +1,5 @@
 import knex, { type Knex } from "knex";
+import { databaseFreeDemo, demoSettings, demoProperties } from './demo';
 import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
@@ -139,6 +140,7 @@ async function migrate(k: Knex) {
   });
 }
 export async function getSettings(): Promise<Settings> {
+  if (databaseFreeDemo()) return demoSettings();
   const k = await db();
   const r = await k("settings").where({ id: 1 }).first();
   return { ...defaults, ...JSON.parse(r.data) };
@@ -187,6 +189,7 @@ export async function queryProperties(
   params: Record<string, string | undefined>,
   admin = false,
 ) {
+  if (databaseFreeDemo()) return demoProperties(params);
   const k = await db();
   const q = k("properties").where(
     "archived",
@@ -293,6 +296,7 @@ export async function queryProperties(
   };
 }
 export async function getProperty(slug: string, admin = false) {
+  if (databaseFreeDemo()) return demoProperties({}).properties.find(p => admin ? p.id === slug : p.slug === slug) || null;
   const k = await db();
   const row = await k("properties")
     .where(admin ? { id: slug } : { slug, archived: false })

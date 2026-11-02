@@ -7,6 +7,7 @@ import {
   createHash,
 } from "node:crypto";
 import { db } from "./db";
+import { databaseFreeDemo } from './demo';
 export function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
   return `${salt}:${scryptSync(password, salt, 64).toString("hex")}`;
@@ -40,6 +41,7 @@ export async function session() {
   });
 }
 export async function currentUser() {
+  if (databaseFreeDemo()) return null;
   if (!process.env.SESSION_SECRET) return null;
   const s = await session();
   if (!s.userId || !s.expires || s.expires < Date.now()) return null;

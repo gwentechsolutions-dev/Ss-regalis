@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
+  distDir: process.env.NEXT_BUILD_DIR || '.next',
+  env: { NEXT_PUBLIC_DATABASE_FREE_DEMO: process.env.DATABASE_FREE_DEMO || (process.env.VERCEL && !process.env.DATABASE_URL ? 'true' : 'false') },
   serverExternalPackages: ["knex", "better-sqlite3", "pg"],
   images: {
     remotePatterns: [

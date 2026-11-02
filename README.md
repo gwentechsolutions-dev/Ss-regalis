@@ -127,3 +127,6 @@ npm run test:e2e
 ```
 
 Unit/database tests use isolated temporary SQLite databases. Browser tests use a dedicated Chrome profile via Playwright and expect the local seeded demo site at `http://localhost:3000`. They do not access a personal browser profile. Screenshots and failure traces go into ignored `test-results/`. See `QA.md` for executed checks and remaining external verification.
+
+## Database-free Vercel demo
+Vercel builds automatically enable the database-free demo when DATABASE_URL is unset. To explicitly enable it, set DATABASE_FREE_DEMO=true and redeploy. The build exposes the corresponding public flag consistently to server and browser code. Bundled src/lib/demo-data.json contains only sample properties and public business settings, not users or enquiries. Public listings, filters, property details, artwork and the intro work without SQLite or a session secret. Enquiry forms link to WhatsApp/email, analytics are discarded, and admin/edit/upload APIs are disabled. Set SITE_URL to your deployed HTTPS URL for canonical links. To enable the full application later, configure PostgreSQL, image storage and SESSION_SECRET and set DATABASE_FREE_DEMO=false before rebuilding.

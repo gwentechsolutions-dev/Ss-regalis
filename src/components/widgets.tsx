@@ -146,6 +146,7 @@ export function EnquiryForm({ property }: { property?: Property }) {
   const [pending, setPending] = useState(false),
     [message, setMessage] = useState(""),
     [success, setSuccess] = useState(false);
+  if (process.env.NEXT_PUBLIC_DATABASE_FREE_DEMO === 'true') return <div className="enquiry-form"><h3>Connect with SS Regalis</h3><p>This is a demonstration website with sample listings. Contact our team for current properties.</p><p><a className="button" href="https://wa.me/919080164771" target="_blank" rel="noreferrer">Chat on WhatsApp ↗</a></p><p><a href="mailto:ssregaladvisory@gmail.com">ssregaladvisory@gmail.com</a></p></div>;
   return (
     <form
       method="post"

@@ -14,6 +14,7 @@ import {
 } from "@/lib/auth";
 import { propertySchema, settingsSchema, enquirySchema } from "@/lib/domain";
 import { z } from "zod";
+import { databaseFreeDemo } from '@/lib/demo';
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 async function handle(
@@ -23,6 +24,11 @@ async function handle(
   try {
     const parts = (await params).path;
     const route = parts.join("/");
+    if (databaseFreeDemo()) {
+      if (route === 'properties' && req.method === 'GET') return NextResponse.json(await queryProperties(Object.fromEntries(new URL(req.url).searchParams)));
+      if (route === 'events') return NextResponse.json({ok:true});
+      return NextResponse.json({error:'This is a demonstration website. Please contact us through WhatsApp or email.'},{status:503});
+    }
     const k = await db();
     const method = req.method;
     const url = new URL(req.url);

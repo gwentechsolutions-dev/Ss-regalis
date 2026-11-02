@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
 import { db, getSettings } from "@/lib/db";
+import { databaseFreeDemo } from '@/lib/demo';
 export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = process.env.SITE_URL || "http://localhost:3000";
+  if (databaseFreeDemo()) return ['', '/properties', '/about', '/contact'].map(p => ({url:origin+p}));
   const k = await db();
   const s = await getSettings();
   const query = k("properties")
