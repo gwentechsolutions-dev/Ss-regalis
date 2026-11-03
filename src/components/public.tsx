@@ -5,7 +5,6 @@ import {
   BedDouble,
   MoveUpRight,
   Phone,
-  MessageCircle,
   ArrowRight,
   LandPlot,
 } from "lucide-react";
@@ -19,6 +18,7 @@ import {
 } from "@/lib/domain";
 import { MobileMenu, TrackedLink } from "./widgets";
 import { responsiveSources } from "@/lib/images";
+import { WhatsAppIcon } from './whatsapp-icon';
 export function Brand({
   settings,
   large = false,
@@ -154,7 +154,7 @@ export function FloatingContact({ settings: s }: { settings: Settings }) {
           label="Chat with us on WhatsApp"
         >
           <span>Chat with us!</span>
-          <MessageCircle size={27} />
+          <WhatsAppIcon size={27} />
         </TrackedLink>
       )}
     </div>
@@ -240,7 +240,7 @@ export function PropertyCard({
               href={whatsappUrl(s, p, process.env.SITE_URL)}
               label={`Enquire about ${p.title}`}
             >
-              <MessageCircle size={19} />
+              <WhatsAppIcon size={19} />
             </TrackedLink>
           )}
         </div>
