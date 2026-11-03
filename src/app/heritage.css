@@ -57,7 +57,8 @@
 .search-choice-control > svg.is-open { transform:rotate(180deg); }
 .search-choice-popover { position:absolute; z-index:30; top:calc(100% + 18px); left:-15px; width:calc(100% + 6px); min-width:220px; padding:10px; background:#fffefa; border:1px solid #e5ddcf; border-radius:12px; box-shadow:0 16px 45px #30231520,0 2px 6px #30231508; }
 .search-choice-popover > p { margin:4px 10px 7px; font-size:8px; letter-spacing:1.4px; color:#9c8b6c; }
-.search-choice-popover ul { list-style:none; margin:0; padding:0; max-height:320px; overflow-y:auto; overscroll-behavior:contain; }
+.search-choice-popover ul { list-style:none; margin:0; padding:0; max-height:320px; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; }
+.search-choice-popover ul::-webkit-scrollbar { display:none; }
 .search-choice-popover li { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:42px; padding:9px 12px; border-radius:7px; color:var(--ink); cursor:pointer; font-size:13px; }
 .search-choice-popover li.is-active { background:#f3ece2; }
 .search-choice-popover li[aria-selected=true] { background:#f5e9e9; color:var(--maroon); }
