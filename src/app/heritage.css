@@ -70,3 +70,4 @@
  .home-search>.button{width:100%;justify-content:space-between;}
  .search-choice-popover{top:calc(100% - 4px);}
 }
+.about-layout > img.about-office-image { height:auto; aspect-ratio:1672/941; object-fit:contain; }

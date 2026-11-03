@@ -19,8 +19,11 @@ export default async function About() {
       </section>
       <section className="container about-layout section">
         <img
-          src="/images/demo/reference-1.webp"
-          alt="Reference photograph of a home in Tirunelveli, Tamil Nadu"
+          src="/images/ss-regalis-office.webp"
+          alt="SS Regalis Realty office illustration with burgundy and gold signage"
+          className="about-office-image"
+          width={1672}
+          height={941}
         />
         <div>
           <p className="eyebrow">KANCHIPURAM ROOTS · TAMIL NADU REACH</p>
