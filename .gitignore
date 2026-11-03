@@ -8,3 +8,11 @@ public/uploads/
 test-results/
 playwright-report/
 *.tsbuildinfo
+# Local agent skill installations and their installer state
+.agents/
+skills-lock.json
+# Local deployment metadata and generated output
+.vercel/
+.netlify/
+coverage/
+*.log
