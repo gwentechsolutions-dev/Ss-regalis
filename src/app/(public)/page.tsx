@@ -14,6 +14,7 @@ import {
 import { getSettings, queryProperties } from "@/lib/db";
 import { PropertyCard, SectionTitle, ContactCTA } from "@/components/public";
 import Intro from "@/components/intro";
+import HomeSearch from "@/components/home-search";
 
 export async function generateMetadata() {
   const s = await getSettings();
@@ -56,44 +57,7 @@ export default async function Home() {
         <div className="container heritage-footnote"><span>KANCHIPURAM <i /> TAMIL NADU</span><small>A celebration of place · Artistic interpretation</small></div>
       </section>
       <section id="discover" className="search-wrap container">
-        <form action="/properties" className="home-search">
-          <div>
-            <label htmlFor="home-type">I’M LOOKING FOR</label>
-            <select id="home-type" name="category">
-              <option value="">All property types</option>
-              {[
-                "Residential Plot",
-                "Farmland",
-                "House",
-                "Villa",
-                "Apartment",
-                "Commercial",
-              ].map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="home-location">IN AND AROUND</label>
-            <input
-              id="home-location"
-              name="location"
-              placeholder="City, town or locality"
-            />
-          </div>
-          <div>
-            <label htmlFor="home-budget">MY BUDGET</label>
-            <select id="home-budget" name="maxPrice">
-              <option value="">Any budget</option>
-              <option value="2500000">Up to ₹25 Lac</option>
-              <option value="5000000">Up to ₹50 Lac</option>
-              <option value="10000000">Up to ₹1 Cr</option>
-            </select>
-          </div>
-          <button className="button maroon-button">
-            Find my property <ArrowUpRight size={18} />
-          </button>
-        </form>
+        <HomeSearch locations={latest.properties.flatMap(p => [p.location, p.city, p.district])} />
       </section>
       <section className="section container">
         <SectionTitle

@@ -1,0 +1,38 @@
+import {test,expect} from '@playwright/test';
+test.beforeEach(async({page})=>{await page.addInitScript(()=>localStorage.setItem('regalis-intro','seen'));});
+test('modern dropdowns and location suggestions submit the selected filters',async({page})=>{
+ await page.goto('/');
+ const type=page.locator('#home-type');
+ await expect(type).toHaveAttribute('role','combobox');
+ await type.click();
+ await page.getByRole('option',{name:'Villa',exact:true}).click();
+ await expect(type).toHaveValue('Villa');
+ const location=page.locator('#home-location');
+ await location.fill('Coim');
+ await expect(page.getByRole('option',{name:'Coimbatore',exact:true})).toBeVisible();
+ await location.press('ArrowDown');await location.press('Enter');
+ await expect(location).toHaveValue('Coimbatore');
+ await page.locator('#home-budget').click();
+ await page.getByRole('option',{name:'Up to ₹1 Cr',exact:true}).click();
+ await page.screenshot({path:'test-results/home-search-selected.png'});
+ await page.getByRole('button',{name:'Find my property'}).click();
+ await expect(page).toHaveURL(/category=Villa/);
+ expect(new URL(page.url()).searchParams.get('location')).toBe('Coimbatore');
+ expect(new URL(page.url()).searchParams.get('maxPrice')).toBe('10000000');
+});
+test('mobile menus, free text locations, and outside dismissal',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/');
+ const location=page.locator('#home-location');
+ await location.fill('A new village');
+ await expect(page.getByText('No suggestions. You can search this location as typed.')).toBeVisible();
+ await location.press('Escape');await expect(location).toHaveAttribute('aria-expanded','false');
+ await page.locator('#home-type').click();
+ const box=await page.locator('.search-choice-popover').boundingBox();
+ expect(box!.x).toBeGreaterThanOrEqual(0);expect(box!.x+box!.width).toBeLessThanOrEqual(390);
+ await page.screenshot({path:'test-results/home-search-mobile.png'});
+ await page.locator('.heritage-signature').click();
+ await expect(page.locator('#home-type')).toHaveAttribute('aria-expanded','false');
+ await page.getByRole('button',{name:'Find my property'}).click();
+ expect(new URL(page.url()).searchParams.get('location')).toBe('A new village');
+});

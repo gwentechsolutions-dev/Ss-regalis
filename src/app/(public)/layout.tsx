@@ -1,5 +1,6 @@
 import { getSettings } from "@/lib/db";
 import { Header, Footer, FloatingContact } from "@/components/public";
+import ScrollMotion from '@/components/scroll-motion';
 export const dynamic = "force-dynamic";
 export default async function PublicLayout({
   children,
@@ -13,6 +14,7 @@ export default async function PublicLayout({
       <main id="main">{children}</main>
       <Footer settings={s} />
       <FloatingContact settings={s} />
+      <ScrollMotion />
     </>
   );
 }

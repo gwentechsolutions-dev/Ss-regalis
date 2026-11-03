@@ -48,3 +48,24 @@
 @media(min-width:1650px){.heritage-hero{min-height:550px;padding-top:65px}}
 @media(min-width:761px) and (max-width:1100px){.heritage-art{left:20%;right:-14%}.heritage-content h1{font-size:43px}.heritage-hero:after{background:linear-gradient(90deg,#f5f0e6 0%,#f5f0e6ef 33%,transparent 67%),linear-gradient(0deg,#f5f0e6,transparent 22%)}}
 @media(max-width:760px){.heritage-hero{padding-bottom:22px}.heritage-art{margin:8px 0 0}.heritage-art img{mask-image:linear-gradient(0deg,transparent 0%,#000 20%,#000 83%,transparent 100%)}.heritage-footnote{margin-top:4px}}
+/* Shared palette, generous option targets, and a compact floating search menu. */
+.home-search > .search-choice { position:relative; min-width:0; }
+.search-choice-control { position:relative; }
+.home-search .search-choice-control input { height:40px; padding-right:25px; text-overflow:ellipsis; }
+.search-choice-control input[readonly] { cursor:pointer; }
+.search-choice-control > svg { position:absolute; right:0; top:12px; color:var(--gold); pointer-events:none; transition:transform .2s; }
+.search-choice-control > svg.is-open { transform:rotate(180deg); }
+.search-choice-popover { position:absolute; z-index:30; top:calc(100% + 18px); left:-15px; width:calc(100% + 6px); min-width:220px; padding:10px; background:#fffefa; border:1px solid #e5ddcf; border-radius:12px; box-shadow:0 16px 45px #30231520,0 2px 6px #30231508; }
+.search-choice-popover > p { margin:4px 10px 7px; font-size:8px; letter-spacing:1.4px; color:#9c8b6c; }
+.search-choice-popover ul { list-style:none; margin:0; padding:0; max-height:320px; overflow-y:auto; overscroll-behavior:contain; }
+.search-choice-popover li { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:42px; padding:9px 12px; border-radius:7px; color:var(--ink); cursor:pointer; font-size:13px; }
+.search-choice-popover li.is-active { background:#f3ece2; }
+.search-choice-popover li[aria-selected=true] { background:#f5e9e9; color:var(--maroon); }
+.search-choice-empty { padding:12px; color:var(--muted); font-size:12px; }
+@media(max-width:760px){.search-choice-popover{left:0;width:100%;min-width:0;top:100%;}.search-choice-popover ul{max-height:260px;}}
+@media(max-width:600px){
+ .home-search{grid-template-columns:1fr;gap:16px;padding:22px;}
+ .home-search>.search-choice{border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px;}
+ .home-search>.button{width:100%;justify-content:space-between;}
+ .search-choice-popover{top:calc(100% - 4px);}
+}
