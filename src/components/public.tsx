@@ -127,7 +127,6 @@ export function Footer({ settings: s }: { settings: Settings }) {
           <Link href="/privacy-policy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/disclaimer">Property disclaimer</Link>
-          <Link href="/photo-credits">Photo credits</Link>
         </div>
       </div>
     </footer>
