@@ -192,7 +192,7 @@ export async function queryProperties(
   );
   if (!admin) {
     q.whereNot("status", "Hidden");
-    if (process.env.DEMO_MODE !== "true") q.where("demo", false);
+    if (process.env.DEMO_MODE !== "true" && !(await getSettings()).showDemoListings) q.where("demo", false);
     if (!(await getSettings()).showSold) q.whereNot("status", "Sold");
   }
   for (const key of ["category", "status"])
@@ -300,7 +300,7 @@ export async function getProperty(slug: string, admin = false) {
     !row ||
     (!admin &&
       (row.status === "Hidden" ||
-        (row.demo && process.env.DEMO_MODE !== "true") ||
+        (row.demo && process.env.DEMO_MODE !== "true" && !(await getSettings()).showDemoListings) ||
         (!(await getSettings()).showSold && row.status === "Sold")))
   )
     return null;

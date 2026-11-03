@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { queryProperties } from "@/lib/db";
-import { BulkActions } from "@/components/admin";
+import { BulkActions, DemoListingActions } from "@/components/admin";
 export default async function AdminProperties({
   searchParams,
 }: {
@@ -25,6 +25,7 @@ export default async function AdminProperties({
           + Add property
         </Link>
       </div>
+      <DemoListingActions />
       <form className="admin-search">
         <input
           name="q"

@@ -14,6 +14,7 @@ import {
 } from "@/lib/auth";
 import { propertySchema, settingsSchema, enquirySchema } from "@/lib/domain";
 import { z } from "zod";
+import { tamilNaduDemos } from '@/lib/demo-catalog';
 import { databaseFreeDemo } from '@/lib/demo';
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -187,6 +188,29 @@ async function handle(
     const u = await requireUser(
       route === "admin/settings" || route === "admin/enquiries/purge",
     );
+    if (route === 'admin/demo-listings' && method === 'POST') {
+      const { action } = z.object({action:z.enum(['add','remove'])}).parse(await readJson(req));
+      let count = 0;
+      await k.transaction(async tx => {
+        if (action === 'add') {
+          for (const p of tamilNaduDemos) {
+            const existing = await tx('properties').where({slug:p.slug}).first();
+            if (existing) {
+              if(existing.demo && existing.archived) { await tx('properties').where({id:existing.id}).update({archived:false,version:tx.raw('version + 1'),updatedAt:new Date().toISOString()});count++; }
+              continue;
+            }
+            await tx('properties').insert({...record(p), id:randomUUID(), archived:false, version:1, createdAt:new Date().toISOString()});
+            count++;
+          }
+        } else {
+          count = await tx('properties').where({demo:true,archived:false}).update({archived:true,version:tx.raw('version + 1'),updatedAt:new Date().toISOString()});
+        }
+        const row = await tx('settings').where({id:1}).first();
+        await tx('settings').where({id:1}).update({data:JSON.stringify({...JSON.parse(row.data),showDemoListings:action==='add'})});
+        await audit(u.id, 'demo.'+action, String(count),tx);
+      });
+      return NextResponse.json({count});
+    }
     if (route === "admin/settings" && method === "PUT") {
       const b = settingsSchema.parse(await readJson(req));
       await k.transaction(async (tx) => {

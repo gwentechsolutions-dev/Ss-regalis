@@ -35,6 +35,17 @@ export function Logout() {
     </button>
   );
 }
+export function DemoListingActions() {
+  const [pending,setPending]=useState(false);
+  const [message,setMessage]=useState('');
+  const router=useRouter();
+  async function run(action:'add'|'remove') {
+    setPending(true);setMessage('');
+    try { const r=await api('/api/admin/demo-listings',{action});setMessage(action==='add'?`${r.count} Tamil Nadu demo listings added or restored.`:`${r.count} demo listings removed from the website. You can restore them from Archived records.`);router.refresh(); }
+    catch(e){setMessage((e as Error).message);}finally{setPending(false);}
+  }
+  return <section className="admin-panel"><h2>Demonstration properties</h2><p>Real Tamil Nadu reference photos with fictional prices and property details. Remove all demo listings in one click; your real listings are preserved.</p><div className="heritage-actions"><button type="button" className="button maroon-button" disabled={pending} onClick={()=>run('add')}>Add Tamil Nadu demos</button><button type="button" className="button" disabled={pending} onClick={()=>run('remove')}>Remove all demo listings</button></div>{message&&<p role="status">{message}</p>}</section>;
+}
 export function LoginForm({ resetToken }: { resetToken?: string }) {
   const ready = useReady();
   const [mode, setMode] = useState(resetToken ? "reset" : "login"),
@@ -673,7 +684,7 @@ export function SettingsEditor({ settings: s }: { settings: Settings }) {
         try {
           await api(
             "/api/admin/settings",
-            { ...data, logo, showSold: data.showSold === "on" },
+            { ...data, logo, showSold: data.showSold === "on", showDemoListings:s.showDemoListings },
             "PUT",
           );
           setMessage(

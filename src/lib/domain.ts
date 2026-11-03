@@ -119,6 +119,7 @@ export const settingsSchema = z.object({
   whatsappMessage: z.string().max(1000),
   about: z.string().max(10000),
   showSold: z.boolean(),
+  showDemoListings: z.boolean().default(false),
   templeModel: optionalUrl,
 });
 export type Settings = z.infer<typeof settingsSchema>;
@@ -146,6 +147,7 @@ export const defaults: Settings = {
   about:
     "A place to put down roots. A space to build your future. Based in Kanchipuram, SS Regalis Reality brings a considered, personal approach to finding property across Tamil Nadu. Tell us what matters to you, and let’s explore the possibilities together.",
   showSold: true,
+  showDemoListings: false,
   templeModel: "",
 };
 export const enquirySchema = z.object({
