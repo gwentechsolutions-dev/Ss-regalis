@@ -1,4 +1,5 @@
 import knex, { type Knex } from "knex";
+import { postgresConnection } from './postgres';
 import { databaseFreeDemo, demoSettings, demoProperties } from './demo';
 import fs from "node:fs";
 import path from "node:path";
@@ -23,13 +24,7 @@ export function connection() {
       pg
         ? {
             client: "pg",
-            connection: {
-              connectionString: process.env.DATABASE_URL,
-              ssl:
-                process.env.DATABASE_SSL === "true"
-                  ? { rejectUnauthorized: true }
-                  : false,
-            },
+            connection: postgresConnection(),
             pool: { min: 0, max: 10 },
           }
         : {
