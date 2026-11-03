@@ -8,16 +8,15 @@ export default async function About() {
   const s = await getSettings();
   return (
     <>
-      <section className="page-hero container">
+      <section className="page-hero container story-opening">
         <p className="eyebrow">OUR ROOTS. YOUR FUTURE.</p>
         <h1>
-          Built around a place.
-          <br />
-          <em>Grounded in people.</em>
+          <span className="story-title-line">Built around a place.</span>
+          <em className="story-title-line">Grounded in people.</em>
         </h1>
         <p>{s.tagline}</p>
       </section>
-      <section className="container about-layout section">
+      <section className="container about-layout section story-opening-body">
         <img
           src="/images/ss-regalis-office.webp"
           alt="SS Regalis Realty office illustration with burgundy and gold signage"
