@@ -16,3 +16,4 @@ skills-lock.json
 .netlify/
 coverage/
 *.log
+supabase/*.local.sql

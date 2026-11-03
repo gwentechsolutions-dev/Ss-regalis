@@ -1,0 +1,14 @@
+const fs = require('node:fs');
+const { randomBytes, randomUUID, scryptSync } = require('node:crypto');
+const path = require('node:path');
+const { email, password, confirm } = JSON.parse(fs.readFileSync(0, 'utf8'));
+if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw Error('Valid email required');
+if (typeof password !== 'string' || password.length < 12) throw Error('Password must have at least 12 characters');
+if (password !== confirm) throw Error('Passwords do not match');
+const salt = randomBytes(16).toString('hex');
+const hash = `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
+const quote = v => "'" + v.replaceAll("'", "''") + "'";
+const sql = `-- Run as postgres in Supabase SQL Editor. Creates a new owner; never changes an existing account.\nINSERT INTO public.users (id,email,hash,role,"sessionVersion")\nVALUES (${quote(randomUUID())},${quote(email.trim().toLowerCase())},${quote(hash)},'owner',1)\nON CONFLICT (email) DO NOTHING;\nSELECT email, role FROM public.users WHERE email=${quote(email.trim().toLowerCase())};\n`;
+const destination = path.join(__dirname, '..', 'supabase', 'admin-account.local.sql');
+fs.writeFileSync(destination, sql, { mode: 0o600 });
+console.log('Created supabase/admin-account.local.sql. Copy its contents to Supabase SQL Editor and Run.');
